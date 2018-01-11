@@ -4,10 +4,15 @@ let h = 500;
 let snake = new Snake();
 let food = new Food();
 
-let score = -1;
+let score = 0;
+let hScore = 0;
+
 
 function setup() {
     createCanvas(w, h);
+    // frameRate(5);
+    // background(41);
+
 }
 
 function draw() {
@@ -16,9 +21,8 @@ function draw() {
     food.update();
     eat();
 
-    snake.updateTail();
     snake.update();
-    snake.collisionBounds();
+    snake.collision();
 
     showScore();
 }
@@ -38,7 +42,8 @@ function keyPressed() {
     }
 
     if (keyCode === 80) {
-        noLoop();
+        snake.increaseTail();
+        score++;
     }
 }
 
@@ -53,6 +58,19 @@ function eat() {
 
 function showScore() {
     textSize(20);
+    textAlign(RIGHT);
     fill(255);
-    text("Score: " + score, w - 100, 20);
+    text("Highscore: " + hScore, w - 5, 20);
+    text("Score: " + score, w - 5, 40);
+
+}
+
+function gameOver() {
+    snake.curLength = 0;
+    snake.tail = [];
+
+    if (score > hScore) {
+        hScore = score;
+    }
+    score = 0;
 }

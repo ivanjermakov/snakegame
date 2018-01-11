@@ -11,23 +11,30 @@ function Snake() {
     this.step = 2;
 
     this.size = 20;
+    this.roundness = 4;
 
     this.tail = [];
-    this.tailPos = {tailX: 0, tailY: 0};
+    this.curLength = 0;
+    this.tailStep = 9;
 
     this.update = function () {
 
         if (this.x % this.size === 0 && this.y % this.size === 0) {
             this.xSpeed = this.dirX;
             this.ySpeed = this.dirY;
+
         }
+
+        this.updateTail();
+        this.displayTail();
 
         this.x += this.xSpeed * this.step;
         this.y += this.ySpeed * this.step;
 
+
         noStroke();
         fill(255);
-        rect(this.x, this.y, this.size, this.size);
+        rect(this.x, this.y, this.size - 1, this.size - 1, this.roundness);
     };
 
     this.direction = function (dirX, dirY) {
@@ -49,40 +56,54 @@ function Snake() {
         }
     };
 
-    this.collisionBounds = function () {
+    this.collision = function () {
         if (this.x < 0) {
             this.x = w - this.size;
         }
+
         if (this.x > w - this.size) {
             this.x = 0;
         }
+
         if (this.y < 0) {
             this.y = h - this.size;
         }
         if (this.y > h - this.size) {
             this.y = 0;
         }
+
+        for (let i = this.tail.length - this.tailStep * 2; i >= 0; i--) {
+            if (this.tail[i]) {
+                let curPos = this.tail[i];
+                let d = dist(this.x, this.y, curPos.x, curPos.y);
+                if (d < this.size) {
+                    gameOver();
+                }
+            }
+        }
     };
 
-    this.increaseTail = function() {
-
+    this.increaseTail = function () {
+        this.curLength += this.tailStep;
     };
 
     this.updateTail = function () {
-        this.tailPos.tailX = this.x;
-        this.tailPos.tailY = this.y;
-        this.tail.unshift(this.tailPos);
+        let tailPos = createVector(this.x, this.y);
+        this.tail.push(tailPos);
 
-        if (this.tail.length > 100) {
-            this.tail.splice(-1, 1);
+        if (this.tail.length > this.curLength) {
+            this.tail.splice(0, 1);
         }
 
-        // for (let i = 0; i < this.tail.length; i++) {
-        //     noStroke();
-        //     fill(0, 255, 100);
-        //     rect(this.tail[i].tailX, this.tail[i].tailY, this.size, this.size);
-        //     // print(this.tail[i], this.x, this.y);
-        // }
+    };
+
+    this.displayTail = function () {
+        for (let i = this.tail.length - 1; i >= 0; i--) {
+            let curPos = this.tail[i];
+            noStroke();
+            fill(255);
+            rect(curPos.x, curPos.y, this.size - 1, this.size - 1, this.roundness);
+        }
     };
 
 }
