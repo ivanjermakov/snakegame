@@ -7,12 +7,14 @@ let food = new Food();
 let score = 0;
 let hScore = 0;
 
+let domScore = document.getElementById('score');
+let domHScore = document.getElementById('hScore');
 
 function setup() {
     createCanvas(w, h);
-    // frameRate(5);
-    // background(41);
 
+    // frameRate(30);
+    // background(41);
 }
 
 function draw() {
@@ -24,7 +26,10 @@ function draw() {
     snake.update();
     snake.collision();
 
-    showScore();
+    // showScore();
+
+    domScore.innerHTML = 'Score: ' + score;
+    domHScore.innerHTML = 'Highscore: ' + hScore;
 }
 
 function keyPressed() {
@@ -56,14 +61,13 @@ function eat() {
     }
 }
 
-function showScore() {
-    textSize(20);
-    textAlign(RIGHT);
-    fill(255);
-    text("Highscore: " + hScore, w - 5, 20);
-    text("Score: " + score, w - 5, 40);
-
-}
+// function showScore() {
+//     textSize(20);
+//     textAlign(RIGHT);
+//     fill(255);
+//     text("Highscore: " + hScore, w - 5, 20);
+//     text("Score: " + score, w - 5, 40);
+// }
 
 function gameOver() {
     snake.curLength = 0;

@@ -8,7 +8,7 @@ function Snake() {
     this.xSpeed = 0;
     this.ySpeed = 0;
 
-    this.step = 2;
+    this.step = 4;
 
     this.size = 20;
     this.roundness = 4;
