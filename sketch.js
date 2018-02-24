@@ -67,7 +67,6 @@ function eat() {
 //     fill(255);
 //     text("Highscore: " + hScore, w - 5, 20);
 //     text("Score: " + score, w - 5, 40);
-
 // }
 
 function gameOver() {
